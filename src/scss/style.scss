@@ -1,0 +1,551 @@
+@use "sass:math";
+
+// Подключение миксинов ============================================================================
+@import "base/mixins";
+
+// Подключение шрифтов ============================================================================
+//&display=swap - добавить при подключении через плагин
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic&display=swap");
+
+// Подключить если есть локальные файлы шрифтов
+//@import "fonts/fonts";
+
+// Подключение иконочных шрифтов ============================================================================
+// Подключить если есть файл иконочного шрифта
+//@import "fonts/icons";
+
+// Шрифт по умолчанию ============================================================================
+$fontFamily: "Montserrat";
+$fontSize: rem(14); // где 14(px) - размер шрифта по умолчанию из макета
+
+// Основные цвета
+$mainColor: #212121; // Цвет шрифта по умолчанию
+
+// Настройки адаптивной сетки ============================================================================
+
+// Минимальная ширина страницы
+$minWidth: 320;
+// Ширина полотна (макета)
+$maxWidth: 1600;
+// Ширина ограничивающего контейнера (0 = нет ограничения)
+$maxWidthContainer: 1200;
+// Общий отступ у контейнера
+// (30 = по 15px слева и справа, 0 = нет отступа)
+$containerPadding: 30;
+
+// Ширина срабатывания первого брейкпоинта
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// Брейк-поинты
+$pc: em($containerWidth); // ПК, ноутбуки, некоторые планшеты в горизонтальном положении
+$tablet: em(991.98); // Планшеты, некоторые телефоны в горизонтальном положении
+$mobile: em(767.98); // Телефоны L
+$mobileSmall: em(479.98); // Телефоны S
+
+// Тип адаптива:
+// 1 = отзывчивость (у контейнера нет брейкпоинтов),
+// 2 = по брейк-поинтам (контейнер меняет свою ширину по брейк-поинтам)
+$responsiveType: 1;
+
+// Обнуление ============================================================================
+@import "base/null";
+
+// Стили тега BODY ============================================================================
+
+body {
+	// Скролл заблокирован
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+	}
+	// Сайт загружен
+	.loaded & {
+	}
+}
+
+// Оболочка wrapper ============================================================================
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	// Прижимаем footer
+	> main {
+		flex: 1 1 auto;
+	}
+	// Фикс для слайдеров
+	> * {
+		min-width: 0;
+	}
+}
+// Ограничивающий контейнер ============================================================================
+
+/*
+(i) Стили будут применяться ко 
+всем классам содержащим *__container
+Например header__container, main__container и т.д.
+Снипет (HTML): cnt
+*/
+@if ($responsiveType==1) {
+	// Отзывчивая
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			padding: 0 rem(math.div($containerPadding, 2));
+		}
+	}
+} @else {
+	// По брейк-поинтам
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Подключение базовых стилей, шаблонов (заготовок) и вспомогательных  классов
+// Для подключения/отключения конкретных стилей смотри base.scss
+@import "base";
+
+// Подключение стилей общих элементов проекта
+@import "common";
+
+// Подключение стилей отдельных блоков
+@import "header";
+@import "footer";
+
+// Подключение стилей отдельных страниц
+.page {
+	// .page__main
+	&__main {
+	}
+	// .page__packages
+	&__packages {
+	}
+	// .page__advantage
+	&__advantage {
+	}
+	// .page__best
+	&__best {
+	}
+}
+.main-page {
+	position: relative;
+	// .main-page__container
+	&__container {
+		z-index: 2;
+		position: relative;
+		@include adaptiveValue("padding-top", 170, 50);
+		@include adaptiveValue("padding-bottom", 210, 50);
+	}
+	// .main-page__title
+	&__title {
+		font-weight: 700;
+		@include adaptiveValue("font-size", 68, 35);
+		line-height: 110%;
+		color: #ffffff;
+		&:not(:last-child) {
+			margin-bottom: 28px;
+		}
+	}
+	// .main-page__subtitle
+	&__subtitle {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 140%;
+		color: #ffffff;
+		&:not(:last-child) {
+			margin-bottom: 52px;
+		}
+	}
+	// .main-page__buttons
+	&__buttons {
+		display: flex;
+		gap: 32px;
+		flex-wrap: wrap;
+	}
+	// .main-page__button
+	&__button {
+	}
+	// .main-page__bg
+	&__bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		&::after {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background: linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.025) 62.79%);
+			backdrop-filter: blur(1px);
+		}
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			object-fit: cover;
+		}
+	}
+}
+//=================
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	@include adaptiveValue("padding-left", 40, 20);
+	@include adaptiveValue("padding-right", 40, 20);
+	min-height: 62px;
+	backdrop-filter: blur(2.5px);
+	border-radius: 100px;
+	font-weight: 500;
+	@include adaptiveValue("font-size", 18, 14);
+	line-height: math.div(22, 18);
+	color: #ffffff;
+	// .button__orange
+	&__orange {
+		background: #ff5900;
+	}
+	// .button__transparent
+	&__transparent {
+		background: rgba(255, 255, 255, 0.2);
+		border: 1px solid #ffffff;
+	}
+}
+//=========================
+
+.packages-page {
+	padding-top: 120px;
+	padding-bottom: 60px;
+	// .packages-page__container
+	&__container {
+	}
+	// .packages-page__title
+	&__title {
+		margin-bottom: 60px;
+	}
+	// .packages-page__body
+	&__body {
+		position: relative;
+		display: grid;
+		gap: 60px;
+		grid-template-columns: repeat(3, 1fr);
+
+		@media (max-width: em(1000)) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		@media (max-width: em(700)) {
+			grid-template-columns: repeat(1, 1fr);
+		}
+	}
+	// .packages-page__item
+	&__item {
+		position: relative;
+		padding: 40px 32px;
+	}
+	// .packages-page__item-box
+	&__item-box {
+		position: relative;
+		z-index: 2;
+		line-height: 140%;
+		color: #fff;
+	}
+	// .packages-page__heading
+	&__heading {
+		font-weight: 700;
+		font-size: 18px;
+		letter-spacing: 0.01em;
+		text-transform: uppercase;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		&:not(:last-child) {
+			padding-bottom: 28px;
+		}
+	}
+	// .packages-page__advertisement
+	&__advertisement {
+		font-weight: 500;
+		font-size: 16px;
+		padding: 20px 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	}
+	// .packages-page__advantage
+	&__advantage {
+		font-weight: 500;
+		opacity: 0.5;
+		padding: 20px 0;
+		&:not(:last-child) {
+			margin-bottom: 8px;
+		}
+	}
+	// .packages-page__sale
+	&__sale {
+		font-weight: 500;
+		font-size: 16px;
+		&:not(:last-child) {
+			margin-bottom: 36px;
+		}
+	}
+	// .packages-page__btn
+	&__btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		border: 1px solid #ff5900;
+		border-radius: 100px;
+		padding: 5px;
+		min-height: 52px;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: math.div(20, 16);
+		color: #ff5900;
+		width: 100%;
+	}
+	// .packages-page__bg
+	&__bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		&::after {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background: linear-gradient(180deg, rgba(51, 51, 51, 0) 0%, #333333 86.98%);
+		}
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			object-fit: cover;
+		}
+	}
+}
+//==================
+.title {
+	font-weight: 700;
+	@include adaptiveValue("font-size", 38, 22);
+	line-height: 120%;
+	span {
+		color: #ff5900;
+	}
+}
+//====================
+
+.advantage-page {
+	padding-top: 60px;
+	padding-bottom: 120px;
+	// .advantage-page__container
+	&__container {
+	}
+	// .advantage-page__title
+	&__title {
+		margin-bottom: 60px;
+	}
+	// .advantage-page__body
+	&__body {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+		gap: 60px;
+	}
+	// .advantage-page__item
+	&__item {
+		text-align: center;
+		&:nth-child(6) {
+			img {
+				opacity: 1;
+			}
+		}
+	}
+	// .advantage-page__img
+	&__img {
+		max-width: 100%;
+		margin-bottom: 16px;
+		opacity: 0.3;
+		min-height: 70px;
+	}
+	// .advantage-page__heading
+	&__heading {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 140%;
+		color: #333333;
+	}
+}
+//===============================
+
+.best-page {
+	background: #f8f8f8;
+	padding: 120px 0;
+	// .best-page__container
+	&__container {
+	}
+	// .best-page__title
+	&__title {
+		margin-bottom: 60px;
+	}
+	// .best-page__body
+	&__body {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+		gap: 60px;
+	}
+	// .best-page__item
+	&__item {
+		box-shadow: 1px 1px 0 rgba(51, 51, 51, 0.3) inset, -1px -1px 0 rgba(51, 51, 51, 0.3) inset;
+		display: grid;
+		// height: 100%;
+		grid-template-rows: auto 1fr;
+		// grid-auto-rows: auto;
+		// align-items: start;
+		// flex-direction: column;
+	}
+	// .best-page__item-box
+	&__item-box {
+		padding: 34px 24px 20px;
+		display: grid;
+		// align-items: start;
+		// grid-template-rows: 0.5fr 1fr auto auto auto;
+		// grid-auto-rows: auto;
+		// height: 100%;
+		// flex-direction: column;
+		// flex: 1 1 auto;
+	}
+	// .best-page__img
+	&__img {
+		max-width: 100%;
+		width: 100%;
+	}
+	// .best-page__heading
+	&__heading {
+		font-weight: 700;
+		font-size: 18px;
+		line-height: 140%;
+		letter-spacing: 0.01em;
+		text-transform: uppercase;
+		text-align: center;
+		height: 100%;
+		// flex: 1 1 auto;
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+	}
+	// .best-page__description
+	&__description {
+		font-weight: 500;
+		line-height: 140%;
+		text-align: center;
+		opacity: 0.5;
+		padding-bottom: 20px;
+		border-bottom: 1px solid rgba(51, 51, 51, 0.2);
+		margin-bottom: 24px;
+		// height: 100%;
+	}
+	// .best-page__sale-block
+	&__sale-block {
+		display: flex;
+		align-items: center;
+		gap: 28.26px;
+		margin-bottom: 16px;
+	}
+	// .best-page__sale-img
+	&__sale-img {
+		opacity: 0.3;
+		position: relative;
+		left: 8px;
+	}
+	// .best-page__sale-text
+	&__sale-text {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 140%;
+		span {
+			color: #ff5900;
+			font-weight: 700;
+		}
+	}
+	// .best-page__price-block
+	&__price-block {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		margin-bottom: rem(32);
+	}
+	// .best-page__price-img
+	&__price-img {
+	}
+	// .best-page__box
+	&__box {
+	}
+	// .best-page__price-sale
+	&__price-sale {
+		font-weight: 700;
+		font-size: 18px;
+		line-height: 120%;
+		text-decoration: line-through;
+		opacity: 0.5;
+	}
+	// .best-page__call
+	&__call {
+		font-weight: 500;
+		line-height: 140%;
+		span {
+			font-weight: 700;
+		}
+	}
+	// .best-page__link
+	&__link {
+		font-weight: 600;
+		line-height: 120%;
+		color: #ff5900;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		text-align: right;
+		margin-left: auto;
+		margin-right: 0;
+		&::after {
+			content: "";
+			background: url("@img/page/best/arrow.svg") center no-repeat;
+			width: 28px;
+			height: 10px;
+		}
+	}
+}
