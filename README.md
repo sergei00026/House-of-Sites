@@ -1,1 +1,1 @@
-https://sergei00026.github.io/testing-work-House-of-Sites/dist/
+https://sergei00026.github.io/House-of-Sites/dist/
